@@ -55,5 +55,7 @@ using System.Runtime.InteropServices;
 // 20170117 1.0.0.2             GetWindowText, EnumWindows 등 Win32함수들 추가
 // 20170301 1.0.0.3             Win32.GetGUIThreadInfo 추가
 //          1.0.0.4             Add Win32.ImmGetDefaultIMEWnd
-[assembly: AssemblyVersion("1.0.0.4")]
-[assembly: AssemblyFileVersion("1.0.0.4")]
+// 20170302 1.0.0.5             Win32클래스 모듈별로 cs파일 분리
+//                              Win32.GetForegroundWindow 추가
+[assembly: AssemblyVersion("1.0.0.5")]
+[assembly: AssemblyFileVersion("1.0.0.5")]
