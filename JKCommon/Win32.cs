@@ -1,4 +1,22 @@
-﻿using System;
+﻿/*
+Copyright 2017, Kim Jongkook d0nzs00n@gmail.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
+associated documentation files (the "Software"), to deal in the Software without restriction, 
+including without limitation the rights to use, copy, modify, merge, publish, distribute, 
+sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is 
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or 
+substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT 
+NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -50,8 +68,9 @@ namespace JKCommon
         static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
         public enum WindowMessage:uint
         {
-            Close = 0x10,       /// WM_CLOSE
-            CopyData = 0x4A,    /// WM_COPYDATA
+            Close = 0x10,           /// WM_CLOSE
+            CopyData = 0x4A,        /// WM_COPYDATA
+            ImeControl = 0x283      /// WM_IME_CONTROL
         }
 
         public static IntPtr SendMessage(IntPtr hWnd, WindowMessage msg, IntPtr wParam, IntPtr lParam)
@@ -676,6 +695,55 @@ namespace JKCommon
             StringBuilder sb = new StringBuilder(1024);
             retVal = GetWindowText(hWnd, sb, 1024);
             return sb.ToString();
+        }
+
+        [DllImport("user32.dll")]
+        public static extern bool GetGUIThreadInfo(uint idThread, ref GUITHREADINFO lpgui);
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct GUITHREADINFO
+        {
+            public int cbSize;
+            public int flags;
+            public IntPtr hwndActive;
+            public IntPtr hwndFocus;
+            public IntPtr hwndCapture;
+            public IntPtr hwndMenuOwner;
+            public IntPtr hwndMoveSize;
+            public IntPtr hwndCaret;
+            public System.Drawing.Rectangle rcCaret;
+        }
+
+        /// <summary>
+        /// Retrieves the default window handle to the IME class.
+        /// </summary>
+        /// <param name="hWnd">Handle to the window.</param>
+        /// <returns>Returns the default window handle to the IME class if successful, or NULL otherwise.</returns>
+        /// <remarks>The operating system creates a default IME window for every thread. The window is created based on the IME class. The application can send the WM_IME_CONTROL message to this window.
+        /// </remarks>
+        [DllImport("imm32.dll")]
+        public static extern IntPtr ImmGetDefaultIMEWnd(IntPtr hWnd);
+
+        [Flags]
+        public enum ImeConversionMode : uint
+        {
+            IME_CMODE_ALPHANUMERIC = 0x0000,
+            IME_CMODE_NATIVE = 0x0001,
+            IME_CMODE_CHINESE = IME_CMODE_NATIVE,
+            IME_CMODE_HANGUL = IME_CMODE_NATIVE,
+            IME_CMODE_JAPANESE = IME_CMODE_NATIVE,
+            IME_CMODE_KATAKANA = 0x0002,            // only effect under IME_CMODE_NATIVE
+            IME_CMODE_LANGUAGE = 0x0003,
+            IME_CMODE_FULLSHAPE = 0x0008,
+            IME_CMODE_ROMAN = 0x0010,
+            IME_CMODE_CHARCODE = 0x0020,
+            IME_CMODE_HANJACONVERT = 0040,
+            IME_CMODE_SOFTKBD = 0x0080,
+            IME_CMODE_NOCONVERSION = 0x0100,
+            IME_CMODE_EUDC = 0x0200,
+            IME_CMODE_SYMBOL = 0x0400,
+            IME_CMODE_FIXED = 0x0800,
+            IME_CMODE_RESERVED = 0xF0000000
         }
     }
 }
