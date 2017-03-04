@@ -46,6 +46,9 @@
   <ItemGroup>
     <Compile Include="DllInjector.cs" />
     <Compile Include="Ini.cs" />
+    <Compile Include="OutlineLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegEx.cs" />
     <Compile Include="StringEx.cs" />
