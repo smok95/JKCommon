@@ -111,39 +111,7 @@ namespace JKCommon
             userName = sb.ToString();
             return ret;
         }
-
-        /// <summary>
-        /// Retrieves the default window handle to the IME class.
-        /// </summary>
-        /// <param name="hWnd">Handle to the window.</param>
-        /// <returns>Returns the default window handle to the IME class if successful, or NULL otherwise.</returns>
-        /// <remarks>The operating system creates a default IME window for every thread. The window is created based on the IME class. The application can send the WM_IME_CONTROL message to this window.
-        /// </remarks>
-        [DllImport("imm32.dll")]
-        public static extern IntPtr ImmGetDefaultIMEWnd(IntPtr hWnd);
-
-        [Flags]
-        public enum ImeConversionMode : uint
-        {
-            IME_CMODE_ALPHANUMERIC = 0x0000,
-            IME_CMODE_NATIVE = 0x0001,
-            IME_CMODE_CHINESE = IME_CMODE_NATIVE,
-            IME_CMODE_HANGUL = IME_CMODE_NATIVE,
-            IME_CMODE_JAPANESE = IME_CMODE_NATIVE,
-            IME_CMODE_KATAKANA = 0x0002,            // only effect under IME_CMODE_NATIVE
-            IME_CMODE_LANGUAGE = 0x0003,
-            IME_CMODE_FULLSHAPE = 0x0008,
-            IME_CMODE_ROMAN = 0x0010,
-            IME_CMODE_CHARCODE = 0x0020,
-            IME_CMODE_HANJACONVERT = 0040,
-            IME_CMODE_SOFTKBD = 0x0080,
-            IME_CMODE_NOCONVERSION = 0x0100,
-            IME_CMODE_EUDC = 0x0200,
-            IME_CMODE_SYMBOL = 0x0400,
-            IME_CMODE_FIXED = 0x0800,
-            IME_CMODE_RESERVED = 0xF0000000
-        }
-
+        
         [DllImport("psapi.dll")]
         public static extern uint GetModuleFileNameEx(IntPtr hProcess, IntPtr hModule, [Out] StringBuilder lpBaseName, uint nSize);
 
